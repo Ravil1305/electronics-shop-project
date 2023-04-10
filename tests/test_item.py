@@ -45,3 +45,11 @@ def test_string_to_number(item1):
     """Тестирует метод string_to_number."""
     assert item1.string_to_number("10000") == 10000
     assert item1.string_to_number("2.034") == 2
+
+def test_repr(item1):
+    """Тестирует метод repr."""
+    assert repr(item1) == "Item('Смартфон', 10000, 20)"
+
+def test_str(item1):
+    """Тестирует метод str."""
+    assert str(item1) == 'Смартфон'
