@@ -70,7 +70,19 @@ class Item:
         return int(number.split(".")[0])
 
     def __repr__(self):
+        """Метод __repr__"""
         return f"{self.__class__.__name__}('{self.__name}', {self.price}, {self.quantity})"
 
     def __str__(self):
+        """Метод __str__"""
         return f"{self.__name}"
+
+    def __add__(self, other):
+        """
+        Cложение экземпляров класса `Phone` и `Item` (сложение по количеству товара в магазине)
+        с проверкой, чтобы нельзя было сложить `Phone` или `Item` с экземплярами не `Phone`
+        или `Item` классов.
+        """
+        if not isinstance(other, Item):
+            raise TypeError('Нельзя сложить `Phone` или `Item` с экземплярами не `Phone` или `Item` классов')
+        return self.quantity + other.quantity
