@@ -1,5 +1,7 @@
 import csv
 
+from src.class_error import InstantiateCSVError
+
 
 class Item:
     """
@@ -57,10 +59,17 @@ class Item:
         Класс-метод, инициализирующий экземпляры
         класса `Item` данными из файла _src/items.csv_
         """
-        with open(data_file, encoding='windows-1251') as file:
-            reader = csv.DictReader(file)
-            for data in reader:
-                cls.all.append((data['name'], float(data['price']), int(data['quantity'])))
+        try:
+            with open(data_file, encoding='windows-1251') as file:
+                reader = csv.DictReader(file)
+                for data in reader:
+                    if not all(key in data for key in ['name', 'price', 'quantity']):
+                        raise InstantiateCSVError
+                    cls.all.append((data['name'], float(data['price']), int(data['quantity'])))
+        except InstantiateCSVError:
+            raise InstantiateCSVError("_Файл items.csv поврежден_")
+        except FileNotFoundError:
+            raise FileNotFoundError("_Отсутствует файл items.csv_")
 
     @staticmethod
     def string_to_number(number):
@@ -79,7 +88,7 @@ class Item:
 
     def __add__(self, other):
         """
-        Cложение экземпляров класса `Phone` и `Item` (сложение по количеству товара в магазине)
+        Сложение экземпляров класса `Phone` и `Item` (сложение по количеству товара в магазине)
         с проверкой, чтобы нельзя было сложить `Phone` или `Item` с экземплярами не `Phone`
         или `Item` классов.
         """
